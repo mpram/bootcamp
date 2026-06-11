@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: Sous Snark Pantry API
+  version: 1.0.0
+  description: |
+    Tiny Entra-protected API exposing pantry inventory and a cook-log.
+    Sous Snark calls this with a token minted from the Foundry project's
+    managed identity, so every call shows up as a service-principal
+    sign-in in Microsoft Entra.
+servers:
+  - url: https://sous-snark-pantry-mpr-f2g3h5hpgta2f9g2.eastus-01.azurewebsites.net/api
+paths:
+  /pantry:
+    get:
+      operationId: getPantry
+      summary: Get the current pantry inventory.
+      description: Returns the list of ingredients currently in stock.
+      responses:
+        '200':
+          description: Pantry contents
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ingredients:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name: { type: string }
+                        qty:  { type: number }
+                        unit: { type: string }
+  /pantry/cook:
+    post:
+      operationId: logCook
+      summary: Log a dish the agent decided to cook.
+      description: Records what Sous Snark cooked and which pantry items it used.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [dish]
+              properties:
+                dish:
+                  type: string
+                  description: Name of the dish that was cooked.
+                ingredients_used:
+                  type: array
+                  items: { type: string }
+                  description: Pantry ingredients consumed (by name).
+      responses:
+        '200':
+          description: Logged successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  total_dishes_logged: { type: integer }

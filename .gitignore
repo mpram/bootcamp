@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Build output
+dist/
+build/
+bin/
+obj/
+
+# Environment / secrets
+.env
+.env.local
+*.env.local
+local.settings.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

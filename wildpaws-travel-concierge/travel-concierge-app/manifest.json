@@ -1,0 +1,41 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
+  "version": "1.0.0",
+  "id": "4512e07e-b48b-453a-bcd1-a62c3689493c",
+  "developer": {
+    "name": "Contoso",
+    "websiteUrl": "https://www.contoso.com",
+    "privacyUrl": "https://www.contoso.com/privacy",
+    "termsOfUseUrl": "https://www.contoso.com/terms"
+  },
+  "name": {
+    "short": "Travel Concierge",
+    "full": "Contoso Travel Concierge"
+  },
+  "description": {
+    "short": "Plan trips, check weather, convert currency, and follow corporate travel policy.",
+    "full": "Contoso Travel Concierge is your AI travel assistant. It looks up live weather, converts currencies, reads corporate travel policy from SharePoint, searches the web for advisories, and hands off expense questions to its sidekick agent — Expense Buddy."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#0078D4",
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "travelConcierge",
+        "file": "declarativeAgent.json"
+      }
+    ]
+  },
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "api.open-meteo.com",
+    "api.frankfurter.app"
+  ]
+}

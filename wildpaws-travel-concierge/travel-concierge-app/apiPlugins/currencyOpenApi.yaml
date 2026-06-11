@@ -1,0 +1,43 @@
+openapi: 3.0.1
+info:
+  title: Frankfurter Currency API
+  description: Free European Central Bank exchange-rate API — no authentication required.
+  version: "1.0.0"
+servers:
+  - url: https://api.frankfurter.app
+paths:
+  /latest:
+    get:
+      operationId: convert
+      summary: Convert an amount between currencies
+      description: Returns the converted amount using the latest ECB reference rates.
+      parameters:
+        - name: amount
+          in: query
+          required: true
+          description: The amount to convert (in the base currency).
+          schema: { type: number, format: float }
+        - name: from
+          in: query
+          required: true
+          description: The source ISO-4217 currency code (e.g. USD, EUR, JPY).
+          schema: { type: string, default: USD }
+        - name: to
+          in: query
+          required: true
+          description: The target ISO-4217 currency code (e.g. USD, EUR, JPY).
+          schema: { type: string, default: EUR }
+      responses:
+        "200":
+          description: Conversion result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount: { type: number }
+                  base: { type: string }
+                  date: { type: string }
+                  rates:
+                    type: object
+                    additionalProperties: { type: number }

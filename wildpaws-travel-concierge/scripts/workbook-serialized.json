@@ -1,0 +1,221 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": { "json": "## Wildpaws Copilot Studio — Audit Activity\n\nLive view of Copilot Studio interactions captured from the Microsoft 365 Unified Audit Log (Purview) and streamed into `WildpawsCopilotAudit_CL` via the Logs Ingestion API.\n\n- **Source**: `Search-UnifiedAuditLog -RecordType CopilotInteraction`\n- **Pipeline**: Purview → `scripts/get-copilot-audit.ps1 -PushToSentinel` → DCE → DCR → LAW table\n- **Note**: Studio agents emit *metadata only* (user/agent/channel/thread). Prompt text, RAI verdict, and tokens require BYOM + Foundry diagnostic settings.\n" },
+      "name": "title"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "tr-param",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "value": { "durationMs": 86400000 },
+            "typeSettings": {
+              "selectableValues": [
+                { "durationMs": 3600000 }, { "durationMs": 14400000 },
+                { "durationMs": 86400000 }, { "durationMs": 259200000 },
+                { "durationMs": 604800000 }
+              ]
+            }
+          }
+        ]
+      },
+      "name": "params"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsCopilotAudit_CL\n| summarize Invocations = count() by bin(TimeGenerated, 15m), AppHost\n| render timechart",
+        "size": 0,
+        "title": "Invocations over time, by channel (AppHost)",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "chart-by-channel"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsCopilotAudit_CL\n| summarize Invocations = count(), Users = dcount(UserPrincipalName), LastSeen = max(TimeGenerated) by AgentName, AppHost\n| order by Invocations desc",
+        "size": 0,
+        "title": "By agent × channel",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "by-agent"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsCopilotAudit_CL\n| summarize Calls = count(), Agents = make_set(AgentName), LastSeen = max(TimeGenerated) by UserPrincipalName\n| top 25 by Calls",
+        "size": 0,
+        "title": "Top users (last 24h)",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "top-users"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsCopilotAudit_CL\n| project TimeGenerated, UserPrincipalName, AgentName, AppHost, ClientIP, ClientRegion, ThreadId, AuditRecordId\n| order by TimeGenerated desc\n| take 100",
+        "size": 0,
+        "title": "Recent interactions",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "recent"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsCopilotAudit_CL\n| summarize Sources = make_set(ClientRegion), Calls = count() by ClientIP\n| top 20 by Calls",
+        "size": 0,
+        "title": "Client IP × region (anomaly hunting)",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "client-ip"
+    },
+    {
+      "type": 1,
+      "content": { "json": "### Tool Invocation Health (existing)\nBelow panels query the `fn_Wildpaws_Tool()` function for connector tool calls (success/fail/duration)." },
+      "name": "tool-section-title"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "fn_Wildpaws_Tool()\n| summarize Calls = count() by bin(TimeGenerated, 15m), success\n| render timechart",
+        "size": 0,
+        "title": "Tool call success vs failure over time",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "tool-success"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "fn_Wildpaws_Tool()\n| summarize Calls = count(), p50 = percentile(duration_ms, 50), p95 = percentile(duration_ms, 95), Failures = countif(success == false) by tool_name, channel_id\n| order by Calls desc",
+        "size": 0,
+        "title": "Tools — calls, latency, failures",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "tool-table"
+    },
+    {
+      "type": 1,
+      "content": { "json": "## Conversation Content (Dataverse transcripts)\n\nActual user prompts and bot responses pulled from the Dataverse `conversationtranscript` table (Copilot Studio transcript storage) and streamed into `WildpawsConversationContent_CL`.\n\n- **Source**: Dataverse Web API `/api/data/v9.2/conversationtranscripts`\n- **Pipeline**: `scripts/get-conversation-transcripts.ps1 -PushToSentinel`\n- **Coverage**: only environments where the agent has *Conversation transcript storage* enabled.\n" },
+      "name": "transcript-title"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsConversationContent_CL\n| where MessageType == 'message'\n| summarize Messages = count() by bin(TimeGenerated, 15m), FromRole\n| render timechart",
+        "size": 0,
+        "title": "User vs bot messages over time",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "transcript-volume"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsConversationContent_CL\n| where MessageType == 'message'\n| where FromRole in ('user','bot')\n| order by TimeGenerated desc\n| project TimeGenerated, FromRole, EnvironmentName, AgentName, UserAadId, TextLength, Text, TranscriptId\n| take 100",
+        "size": 0,
+        "title": "Recent prompts & responses (last 100)",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "transcript-recent"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsConversationContent_CL\n| where MessageType == 'message' and FromRole == 'user'\n| extend Lower = tolower(Text)\n| where Lower has_any ('ignore your instructions','jailbreak','bomb','weapon','exploit','bypass','disregard','prompt injection','system prompt','dan mode')\n| order by TimeGenerated desc\n| project TimeGenerated, EnvironmentName, UserAadId, Text, TranscriptId",
+        "size": 0,
+        "title": "Possible jailbreak / prompt-injection attempts",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "transcript-jailbreak"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsConversationContent_CL\n| where MessageType == 'message'\n| summarize UserPrompts = countif(FromRole == 'user'), BotReplies = countif(FromRole == 'bot'), AvgPromptLen = avg(toint(iff(FromRole == 'user', TextLength, 0))), AvgReplyLen = avg(toint(iff(FromRole == 'bot', TextLength, 0))), LastSeen = max(TimeGenerated) by EnvironmentName, AgentName\n| order by UserPrompts desc",
+        "size": 0,
+        "title": "Per-agent conversation stats",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "transcript-per-agent"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "WildpawsConversationContent_CL\n| where MessageType == 'message' and FromRole == 'user'\n| summarize Prompts = count(), LastSeen = max(TimeGenerated) by UserAadId\n| order by Prompts desc\n| take 25",
+        "size": 0,
+        "title": "Top 25 users by prompt count",
+        "timeContext": { "durationMs": 0 },
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "transcript-top-users"
+    }
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

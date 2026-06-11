@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "schema": {
+      "name": "WildpawsConversationContent_CL",
+      "columns": [
+        { "name": "TimeGenerated",         "type": "datetime" },
+        { "name": "TranscriptId",          "type": "string" },
+        { "name": "ConversationStartTime", "type": "datetime" },
+        { "name": "AgentName",             "type": "string" },
+        { "name": "EnvironmentId",         "type": "string" },
+        { "name": "EnvironmentName",       "type": "string" },
+        { "name": "FromRole",              "type": "string" },
+        { "name": "FromId",                "type": "string" },
+        { "name": "UserAadId",             "type": "string" },
+        { "name": "MessageType",           "type": "string" },
+        { "name": "ActivityId",            "type": "string" },
+        { "name": "ChannelId",             "type": "string" },
+        { "name": "Text",                  "type": "string" },
+        { "name": "TextLength",            "type": "int" }
+      ]
+    },
+    "retentionInDays":      30,
+    "totalRetentionInDays": 30,
+    "plan": "Analytics"
+  }
+}

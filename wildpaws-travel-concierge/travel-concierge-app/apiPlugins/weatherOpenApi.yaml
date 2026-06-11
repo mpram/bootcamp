@@ -1,0 +1,60 @@
+openapi: 3.0.1
+info:
+  title: Open-Meteo Weather API
+  description: Free weather forecast API — no authentication required.
+  version: "1.0.0"
+servers:
+  - url: https://api.open-meteo.com
+paths:
+  /v1/forecast:
+    get:
+      operationId: getForecast
+      summary: Get a daily weather forecast
+      description: Returns daily min/max temperature and precipitation for the next 3 days.
+      parameters:
+        - name: latitude
+          in: query
+          required: true
+          description: Latitude in decimal degrees (e.g. 35.6762 for Tokyo).
+          schema: { type: number, format: float }
+        - name: longitude
+          in: query
+          required: true
+          description: Longitude in decimal degrees (e.g. 139.6503 for Tokyo).
+          schema: { type: number, format: float }
+        - name: daily
+          in: query
+          required: true
+          description: Comma-separated list of daily variables. Use "temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode".
+          schema:
+            type: string
+            default: temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode
+        - name: forecast_days
+          in: query
+          required: false
+          description: Number of forecast days (1-7).
+          schema: { type: integer, default: 3 }
+        - name: timezone
+          in: query
+          required: false
+          description: IANA time zone (e.g. "auto" to use the destination's local zone).
+          schema: { type: string, default: auto }
+      responses:
+        "200":
+          description: Forecast object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  latitude: { type: number }
+                  longitude: { type: number }
+                  timezone: { type: string }
+                  daily:
+                    type: object
+                    properties:
+                      time: { type: array, items: { type: string } }
+                      temperature_2m_max: { type: array, items: { type: number } }
+                      temperature_2m_min: { type: array, items: { type: number } }
+                      precipitation_sum: { type: array, items: { type: number } }
+                      weathercode: { type: array, items: { type: integer } }

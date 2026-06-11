@@ -1,0 +1,23 @@
+{
+  "etag": "\"6f015ec9-0000-0100-0000-6a0f22a30000\"",
+  "id": "/subscriptions/a3ac2636-e819-4d0a-ba76-32e6645f2b85/resourcegroups/rg-wildpaws-telemetry/providers/microsoft.insights/workbooks/a390c0a1-8f2b-5bf8-a4f0-52b34f6fe760",
+  "kind": "shared",
+  "location": "eastus",
+  "name": "a390c0a1-8f2b-5bf8-a4f0-52b34f6fe760",
+  "properties": {
+    "category": "sentinel",
+    "displayName": "Wildpaws Telemetry ù Overview",
+    "revision": "5d9caa76bf3446a1a45a98b6fa9e42fe",
+    "serializedData": null,
+    "sourceId": "/subscriptions/a3ac2636-e819-4d0a-ba76-32e6645f2b85/resourcegroups/rg-wildpaws-telemetry/providers/microsoft.operationalinsights/workspaces/law-wildpaws-dev",
+    "storageUri": null,
+    "tags": null,
+    "timeModified": "2026-05-21T15:20:03.2556559Z",
+    "userId": "d977abb1-6785-4dba-ba67-9f6a7c6346aa",
+    "version": "1.0"
+  },
+  "tags": {
+    "hidden-title": "Wildpaws Telemetry ù Overview"
+  },
+  "type": null
+}
