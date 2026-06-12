@@ -64,8 +64,6 @@ The pilot agents are sitting in **Requests / pending approval**. Apply the CA po
 1. **Custom security attributes:** **Entra admin center → Enterprise applications → [agent's `-AgentIdentity` SP] → Custom security attributes** → confirm `Project = Agent365Pilot` and `Environment = Pilot`.
 2. **Conditional Access:** drive a few agent calls in Teams, then **Entra ID → Monitoring → Sign-in logs → Service principal sign-ins** → confirm the **`Observe – Pilot agents access`** policy shows up under the agent's entry (Report-only result).
 
-> Full CA observation + alerting pipeline is covered in the [Conditional Access for Agents guide](../Entra-set-up/Conditional-Access-for-Agents.md) (Steps 4–5).
-
 ---
 
 ## Reference
@@ -74,3 +72,4 @@ The pilot agents are sitting in **Requests / pending approval**. Apply the CA po
 - [Manage agent requests in Microsoft 365 admin center](https://learn.microsoft.com/microsoft-365/admin/manage/agent-requests)
 - [Conditional Access for Agent ID](https://learn.microsoft.com/entra/identity/conditional-access/agent-id?tabs=custom-security-attributes)
 - [What are custom security attributes in Microsoft Entra ID?](https://learn.microsoft.com/entra/fundamentals/custom-security-attributes-overview)
+
