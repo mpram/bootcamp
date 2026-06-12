@@ -1,4 +1,4 @@
-# 🥾 Solution Engineering Bootcamp — Agent Pilot
+# 🥾 Solution Engineering Bootcamp
 
 A hands-on bootcamp that takes Solution Engineers from **building AI agents** to **securing, governing, and publishing them** as enterprise-ready agents with Microsoft Entra and Microsoft Agent 365.
 
@@ -29,3 +29,4 @@ By working through these labs you will:
 4. **A365** — publish both agents with governance applied.
 
 > The governance labs (Entra-set-up and A365) build directly on the two agents created in the first two labs — work through the folders in order.
+
