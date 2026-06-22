@@ -1,6 +1,6 @@
 # 🍽️ Azure AI Foundry Walkthrough
 
-> A hands-on tutorial for students. You'll build **Sous Snark**, a passive-aggressive sous-chef agent in **Microsoft Foundry**, equipped with three capabilities:
+> A hands-on tutorial for participants. You'll build **Sous Snark**, a passive-aggressive sous-chef agent in **Microsoft Foundry**, equipped with three capabilities:
 >
 > 1. **Bing grounding** live web search for recipes & nutrition facts
 > 2. **Code Interpreter** runs Python to do math (calorie totals, unit conversions, etc.)
@@ -13,16 +13,16 @@
 ## 📑 Index
 
 - [What you'll build](#️-what-youll-build)
-- [Step 1 — Create the Foundry resource from the Azure Portal](#step-1-create-the-foundry-resource-from-the-azure-portal)
-- [Step 2 — Deploy a model](#step-2-deploy-a-model)
-- [Step 3 — Create the Sous Snark agent](#step-3-create-the-sous-snark-agent)
-- [Step 4 — Add Bing grounding (web search)](#step-4-add-bing-grounding-web-search)
-- [Step 5 — Add Code Interpreter](#step-5-add-code-interpreter)
-- [Step 6 — Add an MCP server tool](#step-6-add-an-mcp-server-tool-)
-- [Step 7 — Run an evaluation against the agent](#step-7-run-an-evaluation-against-the-agent-)
-- [Step 8 — Run a Red Teaming scan against the agent](#step-8-run-a-red-teaming-scan-against-the-agent-️)
-- [Step 9 — Publish Sous Snark to Agent 365](#step-9-publish-sous-snark-to-agent-365)
-- [Appendix — Demo prompts (one per tool)](#appendix-demo-prompts-one-per-tool)
+- [Step 1 Create the Foundry resource from the Azure Portal](#step-1-create-the-foundry-resource-from-the-azure-portal)
+- [Step 2 Deploy a model](#step-2-deploy-a-model)
+- [Step 3 Create the Sous Snark agent](#step-3-create-the-sous-snark-agent)
+- [Step 4 Add Bing grounding (web search)](#step-4-add-bing-grounding-web-search)
+- [Step 5 Add Code Interpreter](#step-5-add-code-interpreter)
+- [Step 6 Add an MCP server tool](#step-6-add-an-mcp-server-tool-)
+- [Optional Step 7 Run an evaluation against the agent](#optional-step-7-run-an-evaluation-against-the-agent)
+- [Optional Step 8 Run a Red Teaming scan against the agent](#optional-step-8-run-a-red-teaming-scan-against-the-agent)
+- [Step 9 Publish Sous Snark to Agent 365](#step-9-publish-sous-snark-to-agent-365)
+- [Appendix Demo prompts (one per tool)](#appendix-demo-prompts-one-per-tool)
 
 ---
 
@@ -44,7 +44,7 @@ flowchart LR
 
 ## Step 1 Create the Foundry resource from the Azure Portal
 
-We'll provision from **portal.azure.com** so students see the Azure resource model first, then hop into the Foundry portal for project work.
+We'll provision from **portal.azure.com** so participants see the Azure resource model first, then hop into the Foundry portal for project work.
 
 1. Open **https://portal.azure.com** and sign in.
 2. In the global search bar type **Microsoft Foundry** → click the **Microsoft Foundry** service.
@@ -250,7 +250,7 @@ In the playground ask:
 
 ---
 
-## Step 7 Run an evaluation against the agent 📊
+## Optional Step 7 Run an evaluation against the agent
 
 Now that the agent is configured, run a quick quality evaluation from the Foundry **Evaluations** page.
 
@@ -351,7 +351,7 @@ Tip for stronger insights:
 
 ---
 
-## Step 8 Run a Red Teaming scan against the agent 🛡️
+## Optional Step 8 Run a Red Teaming scan against the agent
 
 After baseline evaluations, run an automated red teaming scan to test safety and security behavior.
 
@@ -364,7 +364,7 @@ After baseline evaluations, run an automated red teaming scan to test safety and
 
 ### 8b. Configure the red teaming run
 
-> 🟡 **Note:** Red teaming through the UI is **not available in all regions** as of June 2026. If you don't see the red teaming option, your Foundry resource's region may not support it yet — pick a supported region or run red teaming via the SDK instead.
+> 🟡 **Note:** Red teaming through the UI is **not available in all regions** as of June 2026. If you don't see the red teaming option, your Foundry resource's region may not support it yet pick a supported region or run red teaming via the SDK instead.
 
 1. **Target**: choose your **Sous Snark agent**.
 2. **Analysis model** / judge model: keep default (`gpt-chat-latest`) unless your tenant requires a different approved deployment.
@@ -464,7 +464,7 @@ When you publish **People in your org**, Agent 365 doesn't auto-trust the agent 
 ### 9e. Chat with Sous Snark in Teams
 
 > 🕒 **Heads-up: the agent can take up to 24 hours to show up in Teams for use.**
-> Even after the publish succeeds and the agent appears in Agent 365 and the Teams admin center as **Allowed**, the Teams client catalog (the **Apps → Built for your org** picker) caches per-tenant and per-user. Propagation usually completes in a few minutes but has been observed to take a full day. If the agent isn't searchable yet, come back later — no republish needed.
+> Even after the publish succeeds and the agent appears in Agent 365 and the Teams admin center as **Allowed**, the Teams client catalog (the **Apps → Built for your org** picker) caches per-tenant and per-user. Propagation usually completes in a few minutes but has been observed to take a full day. If the agent isn't searchable yet, come back later no republish needed.
 
 1. Open **Teams** (desktop or web).
 2. **Apps** → search **sous-snark** → **Add**.

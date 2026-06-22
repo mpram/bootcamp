@@ -3,12 +3,12 @@
 ## Index
 
 - [What you'll build](#what-youll-build)
-- [Why this matters (what students learn)](#why-this-matters-what-students-learn)
+- [Why this matters (what participants learn)](#why-this-matters-what-participants-learn)
 - [Prerequisites](#prerequisites)
-- [Step 1 — Create the Conditional Access policy (Report-only)](#step-1--create-the-conditional-access-policy-report-only)
-- [Step 2 — Tag the agents with custom security attributes](#step-2--tag-the-agents-with-custom-security-attributes)
-- [Step 3 — Notify the sponsor's manager when sponsorship changes](#step-3--notify-the-sponsors-manager-when-sponsorship-changes)
-- [Step 4 — Observe the logs](#step-4--observe-the-logs)
+- [Step 1 Create the Conditional Access policy (Report-only)](#step-1--create-the-conditional-access-policy-report-only)
+- [Step 2 Tag the agents with custom security attributes](#step-2--tag-the-agents-with-custom-security-attributes)
+- [Step 3 Notify the sponsor's manager when sponsorship changes](#step-3--notify-the-sponsors-manager-when-sponsorship-changes)
+- [Step 4 Observe the logs](#step-4--observe-the-logs)
 
 ---
 
@@ -27,15 +27,15 @@ flowchart LR
 
 ---
 
-## Why this matters (what students learn)
+## Why this matters (what participants learn)
 
 > This pilot includes **two agents**: **wildpaws** (the Copilot Studio travel concierge) and **Sous Snark** (the AI Foundry hosted agent). The policy below targets **both** so you observe every agent created in this pilot, not just one.
 
-- **Agents have their own identity.** Neither wildpaws nor Sous Snark is a user — each is an Entra *agent identity* derived from a *blueprint*. Conditional Access can target them directly.
+- **Agents have their own identity.** Neither wildpaws nor Sous Snark is a user each is an Entra *agent identity* derived from a *blueprint*. Conditional Access can target them directly.
 - **CA applies to agents, not just people.** The same policy engine that gates employee sign-ins now gates AI agents.
 - **Report-only = safe observation.** Watch the agent's behavior without breaking it, then promote to enforcement.
 - **The token-request → sign-in-log → Log Analytics → alert pipeline** is the real-world way to monitor what an autonomous agent is doing.
-- **Block is the only control for agent identities** — there's no MFA/interactive remediation for a non-human, which is why agent governance differs from user governance.
+- **Block is the only control for agent identities** there's no MFA/interactive remediation for a non-human, which is why agent governance differs from user governance.
 
 ---
 
@@ -43,7 +43,7 @@ flowchart LR
 
 ---
 
-## Step 1 — Create the Conditional Access policy (Report-only)
+## Step 1 Create the Conditional Access policy (Report-only)
 
 1. Sign in to the **Microsoft Entra admin center** (`https://entra.microsoft.com`) → **Entra ID → Conditional Access → Policies → New policy**.
 2. Name it: `Observe – Pilot agents access`.
@@ -52,14 +52,14 @@ flowchart LR
    - *Optional:* select the **agent blueprint principal(s)** instead to automatically cover every agent derived from those blueprints, including future ones.
 4. **Target resources → Include → Select resources** → pick the resources the pilot agents actually call (e.g. **Microsoft Graph** and any Foundry/Power Platform APIs the two agents use). This scopes the policy to just the pilot's surface area rather than every resource in the tenant.
 5. *(Optional)* **Conditions → Agent risk (Preview) → Configure = Yes** → choose `High` (and `Medium`) to fire only on risky-agent signals.
-6. **Access controls → Grant → Block** — for agent identities, **Block is the only control** (no interactive remediation exists).
+6. **Access controls → Grant → Block** for agent identities, **Block is the only control** (no interactive remediation exists).
 7. **Enable policy = Report-only** → **Create**.
 
-> Report-only means the agent keeps working, but every token request is evaluated and logged as "would have been blocked/granted" — exactly the observability we want. Once you've confirmed the logs look right, flip the toggle to **On** to actually enforce.
+> Report-only means the agent keeps working, but every token request is evaluated and logged as "would have been blocked/granted" exactly the observability we want. Once you've confirmed the logs look right, flip the toggle to **On** to actually enforce.
 
 ---
 
-## Step 2 — Tag the agents with custom security attributes
+## Step 2 Tag the agents with custom security attributes
 
 > **Note:** managing custom security attributes requires the **Attribute Definition Administrator** and **Attribute Assignment Administrator** roles (separate from CA admin, by design).
 
@@ -81,13 +81,11 @@ flowchart LR
 | `Project` | `Agent365Pilot` | `Agent365Pilot` |
 | `Environment` | `Pilot` | `Pilot` |
 
-> **Payoff:** once both agents carry `Project = Agent365Pilot`, you can change the Step 1 assignment from hand-picked identities to a **filter for agents** rule (`agent.Project -eq "Agent365Pilot"`), and any new pilot agent automatically inherits the policy.
-
 ---
 
-## Step 3 — Notify the sponsor's manager when sponsorship changes
+## Step 3 Notify the sponsor's manager when sponsorship changes
 
-Every agent identity has a **sponsor** — the human accountable for it. When that sponsor **leaves or changes role**, the agent needs a new owner. Microsoft Entra ID Governance **Lifecycle Workflows** automate this: a built-in task emails the sponsor's **manager**, and a companion task can **reassign the sponsorship to that manager automatically**.
+Every agent identity has a **sponsor** the human accountable for it. When that sponsor **leaves or changes role**, the agent needs a new owner. Microsoft Entra ID Governance **Lifecycle Workflows** automate this: a built-in task emails the sponsor's **manager**, and a companion task can **reassign the sponsorship to that manager automatically**.
 
 ```mermaid
 flowchart LR
@@ -97,27 +95,31 @@ flowchart LR
   W --> R[🔁 Task 2: transfer sponsorship<br/>Demo removed, Admin added]
 ```
 
-> **Prereqs:** Microsoft Entra **ID Governance** license, **Lifecycle Workflows Administrator** role, the sponsor user has a populated **manager** attribute, and the manager has a populated **mail** attribute.
-
 ### 3a. Assign a sponsor to the agent and set a starting department
 
 > For this pilot we trigger the workflow **only for the `Wildpaws Trail Guide` agent**, so you only need to sponsor that one.
 
-1. **Entra ID → Enterprise applications → [`Wildpaws Trail Guide` `-AgentIdentity` SP] → Owners/Sponsors** (agent identities expose a **Sponsors** relationship).
-2. Add the test user **Demo** as the **sponsor** of **Wildpaws Trail Guide**. **Do not remove it** — the workflow needs it present.
-3. Set Demo's starting department to **Finance**: **Entra ID → Users → Demo → Edit properties → Job info → Department = `Finance`** → **Save**.
-4. Confirm **Demo → Manager = Admin** (same **Job info** blade) and that **Admin** has a **mail** value — the email goes to the manager.
+1. **Create a demo user.** **Entra ID → Users → + New user → Create new user** name it **Demo** and create it. Then open **Demo → Edit properties → Job info** and set **Manager = your Admin account** and **Department = `Finance`** → **Save**.
+2. **Entra ID → Agents → Agent Identities → [`Wildpaws Trail Guide`] → Owners/Sponsors** (agent identities expose a **Sponsors** relationship).
+3. Add the test user **Demo** as the **sponsor** of **Wildpaws Trail Guide**. Remove your Admin user as sponsor there should now be only one account as sponsor/owner: **Demo**.
+4. Set Demo's starting department to **Finance**: **Entra ID → Users → Demo → Edit properties → Job info → Department = `Finance`** → **Save**.
+5. Confirm **Demo → Manager = Admin** (same **Job info** blade) and that **Admin** has a **mail** value the email goes to the manager.
 
 ### 3b. Build the Lifecycle Workflow from the agent-sponsor template
 
 1. **Entra ID → ID Governance → Lifecycle Workflows → Workflows → + New workflow**.
-2. Select the template **"Agent sponsor job profile change"** (tagged **Mover** / **Agents** — *"Execute sponsorship transition tasks for agent sponsor job changes"*).
+2. Select the template **"Agent sponsor job profile change"** (tagged **Mover** / **Agents** *"Execute sponsorship transition tasks for agent sponsor job changes"*).
 3. **Basics:** name it `Notify manager – agent sponsorship change` → **Next**.
-4. **Configure scope (execution conditions):** set the rule to match the **new** department value you'll change *to*:
+4. **Configure scope (execution conditions):** under **Scope details**, **Scope type = Rule based**. Click **+ Add expression** and build the rule to match the **new** department value you'll change *to*:
+   - **Property** = `department`
+   - **Operator** = `equal`
+   - **Value** = `Compliance`
+
+   This produces the rule syntax:
    ```
    (department -eq "Compliance")
    ```
-   *(Match the value you change **to**, not Finance — the user comes "into scope" once the change lands.)* → **Next**.
+   *(Match the value you change **to**, not Finance the user comes "into scope" once the change lands.)* → **Next**.
 5. **Review tasks:** the template pre-loads the agent sponsorship tasks. Confirm both are present (add via **+ Add task** if needed):
    1. **Send email to manager about sponsorship changes** → emails Admin. *(Optional: customize subject/body with tokens like `{{userDisplayName}}`, `{{managerDisplayName}}`.)*
    2. **Transfer agent identity sponsorships to manager** → **automatically removes Demo and makes Admin the sponsor**.
@@ -134,12 +136,11 @@ For the pilot we drive the run manually after staging the attribute change:
 ### 3d. Verify
 
 1. **Workflow → Workflow history → Tasks** → both tasks show **Successful**.
-2. **Admin's mailbox** receives the sponsorship-change email.
-3. **wildpaws → Sponsors**: open the **Wildpaws Trail Guide** agent identity — Demo is gone and **Admin** is now the sponsor (result of task #2).
+2. **wildpaws → Sponsors**: open the **Wildpaws Trail Guide** agent identity Demo is gone and **Admin** is now the sponsor.
 
 ---
 
-## Step 4 — Observe the logs
+## Step 4 Observe the logs
 
 After the agents make a few calls (send wildpaws and Sous Snark a few prompts in Teams):
 

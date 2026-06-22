@@ -1,4 +1,4 @@
-# Sample prompts — show off each tool
+# Sample prompts show off each tool
 
 Use these in the Foundry **Playground** to demo each capability. After each response, expand the tool-call rows in the message to confirm the right tool fired.
 
@@ -26,7 +26,7 @@ Use these in the Foundry **Playground** to demo each capability. After each resp
 
 ## 🔌 MCP server (Microsoft Learn)
 
-> The Microsoft Learn MCP is wired up for demo purposes. It's not food-related — the point is to show students that **any** MCP server plugs in the same way.
+> The Microsoft Learn MCP is wired up for demo purposes. It's not food-related the point is to show participants that **any** MCP server plugs in the same way.
 
 | Prompt | What to expect |
 |---|---|
@@ -53,6 +53,6 @@ In the playground, every assistant message has a small **tool calls** disclosure
 ```
 
 If a tool didn't fire when you expected it to:
-1. Check the agent **Instructions** — is the tool referenced by the right name?
+1. Check the agent **Instructions** is the tool referenced by the right name?
 2. Reload the agent designer (caching).
 3. See [`troubleshooting.md`](troubleshooting.md).

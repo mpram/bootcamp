@@ -1,4 +1,4 @@
-# Troubleshooting — Sous Snark tutorial
+# Troubleshooting Sous Snark tutorial
 
 ## Project / model creation
 
@@ -6,7 +6,7 @@
 **Fix:** You need `Cognitive Services Contributor` on the subscription or resource group. Ask your Azure admin, or use an RG you own.
 
 ### ❌ "No quota available for gpt-4o in this region"
-**Fix:** Pick another region in the deploy dialog (Sweden Central, West US 3 usually have spare). Or pick `gpt-4o-mini` — Sous Snark works fine on it.
+**Fix:** Pick another region in the deploy dialog (Sweden Central, West US 3 usually have spare). Or pick `gpt-4o-mini` Sous Snark works fine on it.
 
 ### ❌ Model deployment stuck on "Provisioning"
 **Fix:** Wait 5 min. If still stuck, delete the deployment and recreate. Capacity allocation can race.
@@ -20,9 +20,9 @@
 
 ### ❌ Agent answers without using tools
 Causes (in order of likelihood):
-1. **Instructions don't mention the tool by name** — the model decides based on instructions + tool descriptions. Update the prompt to say `CALL the Bing grounding tool` etc.
-2. **Tool not actually attached** — check the agent's Tools panel; it should list each tool with a green dot.
-3. **MCP server unreachable** — see MCP section below.
+1. **Instructions don't mention the tool by name** the model decides based on instructions + tool descriptions. Update the prompt to say `CALL the Bing grounding tool` etc.
+2. **Tool not actually attached** check the agent's Tools panel; it should list each tool with a green dot.
+3. **MCP server unreachable** see MCP section below.
 
 ### ❌ Empty / hallucinated response
 **Fix:** Check **Tracing** in the left nav. Open the latest span; look for tool-call errors. Most common: model called a tool with bad args.
@@ -65,7 +65,7 @@ curl -i https://learn.microsoft.com/api/mcp
 Should return 200 or 405. If your corporate proxy blocks it, ask IT to allow `learn.microsoft.com`.
 
 ### ❌ MCP tool listed but never called
-**Fix:** Same as agent-doesn't-use-tools above — explicitly reference the server label in the system prompt (we use `microsoft_learn`).
+**Fix:** Same as agent-doesn't-use-tools above explicitly reference the server label in the system prompt (we use `microsoft_learn`).
 
 ### ❌ MCP call returns "approval required"
 **Fix:** You set **Require approval** to "Always" in Step 6. Either approve each call in the playground, or change setting to "Never" for demos.
@@ -91,7 +91,7 @@ Should return 200 or 405. If your corporate proxy blocks it, ask IT to allow `le
 
 ## When all else fails
 
-1. **Tracing** tab — every tool call, args, latency, error. Most issues become obvious here.
+1. **Tracing** tab every tool call, args, latency, error. Most issues become obvious here.
 2. Try the same prompt with **gpt-4o-mini** to rule out model behavior.
-3. Recreate the agent fresh — designer state can occasionally corrupt during fast clicking.
+3. Recreate the agent fresh designer state can occasionally corrupt during fast clicking.
 4. Open an issue against this tutorial repo with the trace ID.

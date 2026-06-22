@@ -1,4 +1,4 @@
-# 🐾 Wildpaws Expeditions — Copilot Studio Walkthrough
+# 🐾 Wildpaws Expeditions Copilot Studio Walkthrough
 
 > Using this lab, you will learn how to create a Copilot Studio agent from end to end, including setting up and configuring tools that extend agent capabilities. You will explore how to connect multiple agents together to enable more advanced, orchestrated scenarios, and how to deploy agents so they can be shared and consumed across your organization. The lab also introduces key concepts such as Agent ID and Blueprints, helping you understand how agents are structured and managed at scale. From an AI Admin perspective, you will gain hands on experience applying governance and compliance templates, ensuring your agent aligns with organizational standards while confidently publishing it for broader enterprise use.
 
@@ -85,12 +85,12 @@ flowchart LR
 
    **Description**
    ```
-   Your AI expedition planner from Wildpaws Expeditions — trip ideas, weather, currency conversion, and trail-side expense tracking for adventures with your furry crew.
+   Your AI expedition planner from Wildpaws Expeditions trip ideas, weather, currency conversion, and trail-side expense tracking for adventures with your furry crew.
    ```
 
    **Instructions** (paste the entire block)
    ```
-   You are the Wildpaws Trail Guide, the friendly AI concierge for Wildpaws Expeditions — an adventure-travel company specializing in trips for pet owners and their pets.
+   You are the Wildpaws Trail Guide, the friendly AI concierge for Wildpaws Expeditions an adventure-travel company specializing in trips for pet owners and their pets.
 
    Your responsibilities:
    - Help travelers plan expeditions: destinations, weather, packing, pet-friendly logistics
@@ -100,12 +100,12 @@ flowchart LR
    - Use web search for current trail conditions, pet entry requirements, and travel advisories
 
    Style:
-   - Warm, adventurous, lightly playful — drop the occasional 🐾 emoji
+   - Warm, adventurous, lightly playful drop the occasional 🐾 emoji
    - Always confirm departure city, destination, and which pet(s) are coming
    - When showing prices, include the user's home currency conversion
    - End suggestions with one follow-up question to keep the conversation moving
 
-   Never invent flight prices, vaccine rules, hotel availability, or border requirements — always remind the user to verify with an official source or their vet.
+   Never invent flight prices, vaccine rules, hotel availability, or border requirements always remind the user to verify with an official source or their vet.
    ```
 
 4. Click **Create**. Wait for the green **"Your agent has been provisioned"** banner.
@@ -313,7 +313,7 @@ Repeat the §4.1 + §4.2 flow with these values:
 
    **Instructions**:
    ```
-   You are the Wildpaws Expense Tracker — a focused assistant that helps adventurers log expenses from their Wildpaws expeditions.
+   You are the Wildpaws Expense Tracker a focused assistant that helps adventurers log expenses from their Wildpaws expeditions.
 
    When invoked:
    1. Ask for: date, vendor, amount, currency, and category (meals / transport / lodging / pet-care / gear / other)
@@ -321,7 +321,7 @@ Repeat the §4.1 + §4.2 flow with these values:
    3. Reply with a one-line summary like: "✅ Logged: 2026-05-11 · Banff Pet Lodge · $180.00 CAD · pet-care"
    4. Offer to log another or hand back to the Trail Guide
 
-   Be terse — no fluff. Use checkmarks 🐾 and bullet points.
+   Be terse no fluff. Use checkmarks 🐾 and bullet points.
    ```
 
 4. **Create**. Wait for provisioning.
@@ -572,7 +572,7 @@ When you open **https://admin.cloud.microsoft** → **Agents** → **All agents*
 6NMH17jEj6OiqzZNOPMkuYVmqGl6/tCxtbiQqpyh1r13VW
 ```
 
-**Why this happens:** Microsoft 365 *pseudonymizes* (conceals) user, group, and site names in admin reports by default in many tenants. The Agent 365 registry's usage data inherits the same privacy setting, so real identities are replaced with a hashed token. This is a tenant-wide reporting privacy control — it is not specific to agents.
+**Why this happens:** Microsoft 365 *pseudonymizes* (conceals) user, group, and site names in admin reports by default in many tenants. The Agent 365 registry's usage data inherits the same privacy setting, so real identities are replaced with a hashed token. This is a tenant-wide reporting privacy control it is not specific to agents.
 
 **How to show the real user email:**
 
@@ -588,4 +588,4 @@ When you open **https://admin.cloud.microsoft** → **Agents** → **All agents*
 **Notes:**
 - The setting takes effect going forward; allow a short period (and a page refresh) for the report to repopulate. Activity reports can take **up to 48 hours** to fully reflect the change.
 - To re-enable privacy later, repeat the steps and **re-check** the box.
-- If the **Reports** option or the checkbox is greyed out, confirm your account holds the **Global Administrator** role — other admin roles cannot change this setting.
+- If the **Reports** option or the checkbox is greyed out, confirm your account holds the **Global Administrator** role other admin roles cannot change this setting.
