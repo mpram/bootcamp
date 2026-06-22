@@ -17,7 +17,7 @@ By working through these labs you will:
 | # | Chapter | What it covers |
 |---|---------|----------------|
 | 1 | [AI Foundry Agent (Sous Snark)](sous-snark-tutorial/Azure-AI-Foundry-Walkthrough.md) | **Microsoft Foundry agent.** Build *Sous Snark*, a sous-chef agent, with Bing grounding, Code Interpreter (Python), and a public MCP server for live external knowledge. |
-| 2 | Set up Power Platform | **Prepare Power Platform.** Set up the Power Platform environment and prerequisites needed before building the Copilot Studio agent. |
+| 2 | [Setting up your environment](Setting%20up%20your%20environment/Setting-up-your-environment.md) | **Prepare Power Platform.** Set up the Power Platform environment and prerequisites needed before building the Copilot Studio agent. |
 | 3 | [Copilot Studio Agent (Wildpaws Travel Agent)](wildpaws-travel-concierge/COPILOT-STUDIO-WALKTHROUGH.md) | **Copilot Studio agent.** Build *Wildpaws Trail Guide* end to end travel knowledge, web search, two REST API tools (Weather, FX), and a connected *Expense Tracker* sub-agent then deploy it to Teams. Introduces Agent ID and blueprints. |
 | 4 | [Entra Setup](Entra-set-up/Conditional-Access-for-Agents.md) | **Govern the agent identities in Entra.** Create a Report-only Conditional Access policy, tag agents with custom security attributes, and automate sponsor-change notifications with lifecycle workflows. |
 | 5 | [Agent 365](A365/Agent-365-Custom-Template.md) | **Publish with Agent 365.** Apply the Entra Conditional Access policy and custom security attributes to the pilot agents during the Agent 365 publish wizard. |
@@ -25,7 +25,7 @@ By working through these labs you will:
 ## Suggested order
 
 1. **AI Foundry Agent (Sous Snark)** build the Foundry agent.
-2. **Set up Power Platform** prepare the Power Platform environment.
+2. **Setting up your environment** prepare the Power Platform environment.
 3. **Copilot Studio Agent (Wildpaws Travel Agent)** build the Copilot Studio agent.
 4. **Entra Setup** secure and govern both agent identities.
 5. **Agent 365** publish both agents with governance applied.
