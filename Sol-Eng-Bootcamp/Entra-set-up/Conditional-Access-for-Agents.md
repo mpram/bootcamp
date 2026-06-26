@@ -8,7 +8,6 @@
 - [Step 1 Create the Conditional Access policy (Report-only)](#step-1--create-the-conditional-access-policy-report-only)
 - [Step 2 Tag the agents with custom security attributes](#step-2--tag-the-agents-with-custom-security-attributes)
 - [Step 3 Notify the sponsor's manager when sponsorship changes](#step-3--notify-the-sponsors-manager-when-sponsorship-changes)
-- [Step 4 Observe the logs](#step-4--observe-the-logs)
 
 ---
 
@@ -137,13 +136,3 @@ For the pilot we drive the run manually after staging the attribute change:
 
 1. **Workflow → Workflow history → Tasks** → both tasks show **Successful**.
 2. **wildpaws → Sponsors**: open the **Wildpaws Trail Guide** agent identity Demo is gone and **Admin** is now the sponsor.
-
----
-
-## Step 4 Observe the logs
-
-After the agents make a few calls (send wildpaws and Sous Snark a few prompts in Teams):
-
-1. **Entra ID → Monitoring → Sign-in logs → Service principal sign-ins** tab.
-2. Filter by either agent's name / app ID.
-3. Open an entry → **Report-only** tab (or **Conditional Access** tab once enforced) → you'll see your policy and its result (`Report-only: would block` / `Failure` / `Success`).
