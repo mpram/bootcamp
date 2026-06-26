@@ -84,7 +84,7 @@ flowchart LR
 
 ## Step 3 Notify the sponsor's manager when sponsorship changes
 
-Every agent identity has a **sponsor** the human accountable for it. When that sponsor **leaves or changes role**, the agent needs a new owner. Microsoft Entra ID Governance **Lifecycle Workflows** automate this: a built-in task emails the sponsor's **manager**, and a companion task can **reassign the sponsorship to that manager automatically**.
+Every agent identity has a sponsor the human accountable for it. When that sponsor leaves or changes role, the agent needs a new owner. Microsoft Entra ID Governance Lifecycle Workflows automate this: a built-in task emails the sponsor's manager, and a companion task can reassign the sponsorship to that manager automatically.
 
 ```mermaid
 flowchart LR
