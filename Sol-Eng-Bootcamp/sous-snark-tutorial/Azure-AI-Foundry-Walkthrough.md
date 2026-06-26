@@ -509,18 +509,6 @@ The `principalDisplayName` MUST end in `-AgentIdentity`. If it ends in just `-fd
 
 > 💡 **Why this exists:** Foundry signs the OTel payload with the agent's managed identity and POSTs to the Agent 365 S2S OpenTelemetry endpoint. Without `OtelWrite`, those calls return **401** silently spans never land in the Activity tab. (No error surfaces in the Foundry UI; you'll just see an empty Activity view.)
 
-### 9e. Verify telemetry round-trip
-
-To confirm everything is wired end-to-end:
-
-1. In Teams, send Sous Snark **3 different prompts** (one Bing-grounded, one Code-Interpreter, one MCP question).
-2. Within ~60 seconds:
-   - **Foundry → Traces** tab on the agent: 3 new trace rows with the tool calls.
-   - **M365 admin → Agents → sous-snark (registration row) → Activity**: 3 new activity entries.
-3. Both views should show the same conversation ids that's the Agent 365 ↔ Foundry stitch.
-
-> 🟡 **Activity tab still empty after 2–5 min?** Re-run Step 9d and check that the `principalDisplayName` in the verify output ends in **`-AgentIdentity`**. If it ends in just `-fdy-eus2`, you granted the role to the workspace MI instead of the Entra Agent Identity that's the #1 cause of an empty Activity tab. Foundry signs OTel exports with the Entra Agent Identity, not the workspace MI.
-
 ---
 
 ## Appendix Demo prompts (one per tool)
