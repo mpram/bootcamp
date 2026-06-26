@@ -21,3 +21,7 @@ local.settings.json
 .DS_Store
 Thumbs.db
 *.log
+.vscode/
+
+# PDF export (not published)
+pdf-export/

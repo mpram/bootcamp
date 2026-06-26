@@ -434,72 +434,17 @@ Scroll down past the Agent block:
 
 > 💡 The **Privacy** and **Terms** URLs are validated by the M365 manifest schema. Empty values block the next step.
 
-### 9d. Approve the agent in Agent 365 → Requests
+### 9d. Grant the agent permission to write to Agent 365 (OtelWrite) 🛡️
 
-When you publish **People in your org**, Agent 365 doesn't auto-trust the agent it parks it in a **Pending review** queue for a tenant admin to approve. This is where governance happens.
-
-1. Open **Microsoft 365 admin center** (`https://admin.cloud.microsoft`).
-2. Left rail → **Agents** → **All agents**.
-3. Top tabs → click **Requests** *(URL: `/#/agents/all/requested`)*.
-4. You'll see your **sous-snark** row with:
-   - **Source**: `Your org · Microsoft Foundry`
-   - **State**: 🟠 **Pending review**
-   - **Last modified**: today's date
-5. Click the **⋯** (more) menu on the **sous-snark** row → **Review request** (or click the row).
-6. Choose an action:
-   - ✅ **Approve** → state flips to **Approved**, agent moves from **Requests** to **Registry**, and becomes discoverable for end users.
-   - ⏸️ **Request changes** → sends feedback back to the developer; agent stays in `Pending review`.
-   - ❌ **Reject** → blocks the agent; the Teams app stays installed but the Agent 365 entry is denied and telemetry won't surface in the Registry's Activity view.
-
-#### After approval verify in Registry
-
-1. Back to **Agents → All agents** → **Registry** tab.
-2. Filter by **State = Approved**, search **sous-snark**.
-3. Click the row → confirm:
-   - **Activity** tab is now populated (per-turn telemetry once users chat with it in Teams).
-   - **Owners** lists your dev account.
-   - **Identity** shows the Entra app + Agent 365 registration id.
-   - **Sources** lists the Foundry project (`sous-snark-proj`).
-
-### 9e. Chat with Sous Snark in Teams
-
-> 🕒 **Heads-up: the agent can take up to 24 hours to show up in Teams for use.**
-> Even after the publish succeeds and the agent appears in Agent 365 and the Teams admin center as **Allowed**, the Teams client catalog (the **Apps → Built for your org** picker) caches per-tenant and per-user. Propagation usually completes in a few minutes but has been observed to take a full day. If the agent isn't searchable yet, come back later no republish needed.
-
-1. Open **Teams** (desktop or web).
-2. **Apps** → search **sous-snark** → **Add**.
-3. Start a 1:1 chat: `What can I cook with eggs and stale bread? And don't take all day.`
-4. You should see Sous Snark reply with full attitude, optionally citing Bing results.
-
-> 🐾 First reply can be slow (cold-start of the bot channel registration). Subsequent turns are normal.
-
-### 9f. Find it in the Agents Registry (Agent 365)
-
-1. Open **Microsoft 365 admin center** (`https://admin.microsoft.com`).
-2. Left rail → **Settings** → **Agents** *(or top search → "Agents")*.
-3. Tab **All agents** → search **sous-snark**.
-4. You'll see **two related rows** (this is expected as of June 2026):
-   - One auto-discovered from the Teams bot catalog (chat surface).
-   - One explicit **Agent 365 registration** with Activity & Monitor data.
-5. Click the explicit registration → **Activity** tab to see per-turn telemetry (prompt + tool calls + response) flowing in from Foundry traces.
-
-### 9f-bis. Grant the agent permission to write to Agent 365 (OtelWrite) 🛡️
-
-> 🟠 **Don't skip this without it, the `Activity` tab in Step 9g will stay empty forever**, even though Foundry Traces look perfect. Sous Snark is a **Hosted agent**, so its managed identity has to be explicitly authorized to push telemetry into the Agent 365 OpenTelemetry endpoint.
+> 🟠 **Don't skip this without it, the `Activity` tab in Step 9e will stay empty forever**, even though Foundry Traces look perfect. Sous Snark is a **Hosted agent**, so its managed identity has to be explicitly authorized to push telemetry into the Agent 365 OpenTelemetry endpoint.
 >
 > Source: [Microsoft Agent 365 integration with Foundry → Granting A365 OpenTelemetry read/write permissions to an agent](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-365-integration#granting-a365-opentelemetry-readwrite-permissions-to-an-agent).
 
 You'll assign the **`Agent365.Observability.OtelWrite`** app role (id `8f71190c-00c8-461d-a63b-f74abde9ba52`) on the **`Agent365Observability`** service principal to the agent's **Entra Agent Identity** service principal.
 
-> 🟠 **Critical pick the RIGHT principal.** A Hosted Foundry agent has **two** identities in your tenant:
-> - The **workspace managed identity** (e.g. `sous-snark-fdy-eus2`, principalId looks like `bf15b047-…`). This is the Foundry resource's MI used for ARM/data-plane calls.
-> - The **Entra Agent Identity** (e.g. `sous-snark-fdy-eus2-sous-snark-proj-sous-snark-AgentIdentity`, a `#microsoft.graph.agentIdentity` SP). This is the principal Foundry signs **telemetry** with.
->
-> The OtelWrite role MUST go on the **Entra Agent Identity** (the second one). Assigning it to the workspace MI silently does nothing Agent 365 still 401s, Activity tab still empty. Ask me how I know. 🙃
-
 **Prerequisites**
 - Azure CLI (`az`) signed in with **Global Admin** or **Application Administrator** permissions.
-- The agent's **Entra Agent ID** (a GUID). Find it in **M365 admin center → Agents → sous-snark → Details → Entra agent ID** (visible in the portal screenshot from Step 9g). It looks like `27b331e6-c395-4559-a3e7-77b2f96d1a7c` (yours will differ).
+- The agent's **Entra Agent ID** (a GUID). Find it in **M365 admin center → Agents → sous-snark → Details → Entra agent ID** (visible in the portal screenshot from Step 9e). It looks like `27b331e6-c395-4559-a3e7-77b2f96d1a7c` (yours will differ).
 
 **Steps (PowerShell)**
 
@@ -564,9 +509,9 @@ The `principalDisplayName` MUST end in `-AgentIdentity`. If it ends in just `-fd
 
 > 💡 **Why this exists:** Foundry signs the OTel payload with the agent's managed identity and POSTs to the Agent 365 S2S OpenTelemetry endpoint. Without `OtelWrite`, those calls return **401** silently spans never land in the Activity tab. (No error surfaces in the Foundry UI; you'll just see an empty Activity view.)
 >
-> 🐾 **Workshop tip:** assign the role **right after Step 9d approval** so by the time you run your demo prompts in Step 9g, telemetry has been authorized end-to-end.
+> 🐾 **Workshop tip:** assign the role **right after you publish the agent** so by the time you run your demo prompts in Step 9e, telemetry has been authorized end-to-end.
 
-### 9g. Verify telemetry round-trip
+### 9e. Verify telemetry round-trip
 
 To confirm everything is wired end-to-end:
 
@@ -576,24 +521,13 @@ To confirm everything is wired end-to-end:
    - **M365 admin → Agents → sous-snark (registration row) → Activity**: 3 new activity entries.
 3. Both views should show the same conversation ids that's the Agent 365 ↔ Foundry stitch.
 
-> 🟡 **Activity tab still empty after 2–5 min?** Re-run Step 9f-bis and check that the `principalDisplayName` in the verify output ends in **`-AgentIdentity`**. If it ends in just `-fdy-eus2`, you granted the role to the workspace MI instead of the Entra Agent Identity that's the #1 cause of an empty Activity tab. Foundry signs OTel exports with the Entra Agent Identity, not the workspace MI.
-
----
-
-### 🎉 You're done!
-
-You have built, evaluated, red-teamed, and shipped a Foundry agent into Teams + Microsoft 365 + Agent 365. From here, common next steps:
-
-- Add **knowledge sources** (SharePoint, Files) to ground Sous Snark on your own recipe collection.
-- Add **declarative-agent actions** that call your own APIs (see `pantry-api/` in this repo for a starter Function App).
-- Wire **continuous evaluation** so every published version is auto-scored against your golden set.
-- Use **Agent 365 Activity** as the source of truth for usage analytics export to Log Analytics for dashboards.
+> 🟡 **Activity tab still empty after 2–5 min?** Re-run Step 9d and check that the `principalDisplayName` in the verify output ends in **`-AgentIdentity`**. If it ends in just `-fdy-eus2`, you granted the role to the workspace MI instead of the Entra Agent Identity that's the #1 cause of an empty Activity tab. Foundry signs OTel exports with the Entra Agent Identity, not the workspace MI.
 
 ---
 
 ## Appendix Demo prompts (one per tool)
 
-Use these prompts in the **Playground** (Step 5+) **or** in Teams after publish (Step 9e) to verify each tool fires end-to-end. After each one, open **Foundry → Traces** and **M365 admin → Agents → sous-snark → Activity** to confirm the matching tool span appears.
+Use these prompts in the **Playground** (Step 5+) **or** in Teams after publish to verify each tool fires end-to-end. After each one, open **Foundry → Traces** and **M365 admin → Agents → sous-snark → Activity** to confirm the matching tool span appears.
 
 ### 1. Bing grounding live web search
 
