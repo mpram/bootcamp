@@ -389,25 +389,6 @@ Repeat the §4.1 + §4.2 flow with these values:
    - **Channels**: Teams
 4. In the **Overview** tab, look for **Request**, select the agent, and you now have the option to publish the agent to the rest of the organization by selecting a **Template** or creating one from scratch directly in Agent 365.
 
-Done. This is the full Agent Registry experience **without a Microsoft 365 Copilot license**.
-
-### Step 9 closing remarks
-
-**What you accomplished:**
-
-- Completed a full end-to-end solution with an agent that includes multiple tools.
-- Connected the agent to another agent, enabling agent-to-agent communication.
-- Shared the solution across the organization, following Power User best practices.
-- Acted as an AI Admin by approving the agent and applying the required organizational templates to ensure compliance.
-- Applied identity and access controls, including conditional access policies, demonstrating the role of an Identity Admin.
-- Prepared the solution for monitoring and observability by triggering prompts.
-- Enabled activity tracking in Agent 365, populating the Activity tab.
-- Verified sign-in logs in Entra for the agent identity `Wildpaws Trail Guide`.
-
-> Note: Logs in Entra Admin Center may take up to 10 minutes to appear.
-
-🎉 Congratulations, you just built a full demo that you can reuse with your customers.
-
 ---
 
 ## Demo script: prompts that exercise EVERY tool, knowledge source, and connected agent
@@ -438,17 +419,6 @@ Run these in the in-studio **Test your agent** panel or in the published Teams a
 | 18 | **Weather + Knowledge** | "What's the weather in Kyoto next Tuesday, and what are the top dog-friendly things to do there?" |
 | 19 | **FX + Knowledge** | "How much is 100 GBP in MXN, and what paperwork do I need to bring my dog into Mexico?" |
 | 20 | **All four capabilities in one prompt** | See **Big finale** below. |
-
-### Big finale: everything in one prompt
-
-> *"I'm planning a 4-day trip from Seattle to Lisbon next week with my border collie. Tell me the weather, what to pack, dog entry rules into Portugal, convert my $2,500 budget into EUR, and after that I want to log a $420 United Airlines ticket I just bought."*
-
-Expected orchestration:
-1. **Wildpaws Weather**: Lisbon, 4-day forecast
-2. **USDA APHIS / Web Search**: dog import rules into Portugal
-3. **Wildpaws FX**: USD 2,500 to EUR
-4. Packing list grounded in weather + Lonely Planet
-5. Hand off to **Wildpaws Expense Tracker** to log the United ticket
 
 ### Conversation-starter shortcuts
 
