@@ -508,8 +508,6 @@ The `principalDisplayName` MUST end in `-AgentIdentity`. If it ends in just `-fd
 > 🐾 **Don't be thrown off by `resourceDisplayName: "maven-prod"`** that's the historical internal name of the Agent365Observability service principal in many tenants. As long as the `appRoleId` and `resourceId` match what you posted, you're good.
 
 > 💡 **Why this exists:** Foundry signs the OTel payload with the agent's managed identity and POSTs to the Agent 365 S2S OpenTelemetry endpoint. Without `OtelWrite`, those calls return **401** silently spans never land in the Activity tab. (No error surfaces in the Foundry UI; you'll just see an empty Activity view.)
->
-> 🐾 **Workshop tip:** assign the role **right after you publish the agent** so by the time you run your demo prompts in Step 9e, telemetry has been authorized end-to-end.
 
 ### 9e. Verify telemetry round-trip
 
